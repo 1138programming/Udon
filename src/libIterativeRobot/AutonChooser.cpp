@@ -86,6 +86,7 @@ void AutonChooser::runAuton() {
 AutonChooser* AutonChooser::getInstance() {
   if (instance == 0) {
     instance = new AutonChooser();
+    return instance;
   } else {
     return instance;
   }

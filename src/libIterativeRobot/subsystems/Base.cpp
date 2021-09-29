@@ -64,11 +64,11 @@ void Base::initDefaultCommand() {
  * @param right - speed of the right side
  */
 void Base::move(int leftSpeed, int rightSpeed) {
-  if (imuCallibrating()) {
-    leftSpeed = 0;
-    rightSpeed = 0;
-    printf("IMU Still calibrating\n");
-  }
+  // if (imuCallibrating()) {
+  //   leftSpeed = 0;
+  //   rightSpeed = 0;
+  //   printf("IMU Still calibrating\n");
+  // }
   //printf("Left speed: %d, Right speed: %d\n", leftSpeed, rightSpeed);
   frontLeftMotor->setSpeed(leftSpeed);
   frontRightMotor->setSpeed(rightSpeed);
