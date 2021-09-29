@@ -1,7 +1,7 @@
 {
     "py/object": "pros.conductor.project.Project",
     "py/state": {
-        "project_name": "Noodle",
+        "project_name": "Udon",
         "target": "v5",
         "templates": {
             "kernel": {
@@ -149,6 +149,34 @@
                     "src/main.c"
                 ],
                 "version": "3.2.1"
+            },
+            "libIterativeRobot": {
+                "location": "C:\\Users\\eeuser\\AppData\\Roaming\\PROS\\templates\\libIterativeRobot@0.0.1",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "libIterativeRobot",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.2.1",
+                "system_files": [
+                    "include\\libIterativeRobot\\commands\\CommandGroup.h",
+                    "include\\libIterativeRobot\\commands\\Status.h",
+                    "include\\libIterativeRobot\\events\\EventListener.h",
+                    "include\\libIterativeRobot\\events\\Trigger.h",
+                    "include\\libIterativeRobot\\Robot.h",
+                    "include\\libIterativeRobot\\commands\\ConditionalGroup.h",
+                    "include\\libIterativeRobot\\subsystems\\Subsystem.h",
+                    "include\\libIterativeRobot\\commands\\LambdaGroup.h",
+                    "include\\libIterativeRobot\\events\\JoystickButton.h",
+                    "include\\libIterativeRobot\\RobotBase.h",
+                    "include\\libIterativeRobot\\events\\JoystickChannel.h",
+                    "include\\libIterativeRobot\\commands\\Command.h",
+                    "include\\libIterativeRobot\\events\\EventScheduler.h",
+                    "firmware\\libIterativeRobot.a"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "0.0.1"
             },
             "okapilib": {
                 "location": "/home/edward/.config/pros/templates/okapilib@3.3.12",
