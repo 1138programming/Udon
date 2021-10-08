@@ -6,7 +6,7 @@ const double Arm::kLowTowerPos = 2500;
 const double Arm::kMidTowerPos = 3000;
 
 Arm::Arm() {
-  // Get intake motors
+  // Get TestSubsystem motors
   armMotor = Motor::getMotor(armMotorPort, armMotorGearset);
   armController = new PIDController(0.7, 0, 0);
   armController->setTolerance(25, 10);
