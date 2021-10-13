@@ -1,9 +1,9 @@
-#ifndef _COMMANDS_CLAWCONTROL_H_
-#define _COMMANDS_CLAWCONTROL_H_
+#ifndef _COMMANDS_STOPANGLER_H_
+#define _COMMANDS_STOPANGLER_H_
 
 #include "libIterativeRobot/commands/Command.h"
 
-class ClawControl: public libIterativeRobot::Command {
+class StopAngler: public libIterativeRobot::Command {
   public:
     bool canRun();
     void initialize();
@@ -12,9 +12,8 @@ class ClawControl: public libIterativeRobot::Command {
     void end();
     void interrupted();
     void blocked();
-    ClawControl(bool Open);
+    StopAngler();
   private:
-    bool Open;
 };
 
-#endif // _COMMANDS_CLAWCONTROL_H_
+#endif // _COMMANDS_STOPANGLER_H_

@@ -1,38 +1,39 @@
-#include "libIterativeRobot/commands/Claw/StopClaw.h"
+#include "libIterativeRobot/commands/Angler/StopAngler.h"
 #include "libIterativeRobot/Robot.h"
 #include "Constants.h"
 
-StopClaw::StopClaw() {
-  //requires(Robot::claw);
+StopAngler::StopAngler() {
+  //requires(Robot::angler);
   //this->priority = DefaultCommandPriority; // Lowest priority
 }
 
-bool StopClaw::canRun() {
+bool StopAngler::canRun() {
   return true; // This is the default value anyways, so this method can be removed
 }
 
-void StopClaw::initialize() {
+void StopAngler::initialize() {
   // Perform any initialization steps for this command here, not in the
   // constructor
-  Robot::claw->move(0);
+  Robot::angler->move(0);
 }
 
-void StopClaw::execute() {
+void StopAngler::execute() {
+  Robot::angler->move(0);
 }
 
-bool StopClaw::isFinished() {
+bool StopAngler::isFinished() {
   return false;
 }
 
-void StopClaw::end() {
+void StopAngler::end() {
   // Code that runs when isFinished() returns true.
 }
 
-void StopClaw::interrupted() {
+void StopAngler::interrupted() {
   // Code that runs when this command is interrupted by another one
   // with a higher priority.
 }
 
-void StopClaw::blocked() {
+void StopAngler::blocked() {
 
 }

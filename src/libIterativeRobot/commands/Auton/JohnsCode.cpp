@@ -3,8 +3,9 @@
 #include "libIterativeRobot/commands/Auton/AutonGroup2.h"
 #include "libIterativeRobot/commands/Miscellaneous/Delay.h"
 #include "libIterativeRobot/commands/Intake/MoveIntakeFor.h"
-#include "libIterativeRobot/commands/Claw/MoveClawFor.h"
 #include "libIterativeRobot/commands/Base/BaseLinearMovement.h"
+#include "libIterativeRobot/commands/Angler/MoveAnglerFor.h"
+#include "libIterativeRobot/commands/Angler/MoveAnglerTo.h"
 #include "libIterativeRobot/commands/Base/DriveForTime.h"
 #include "libIterativeRobot/commands/Base/RotateBase.h"
 #include "libIterativeRobot/commands/Miscellaneous/FlipOut.h"
@@ -15,20 +16,20 @@
 JohnsCode::JohnsCode() { //*Negative is forward
   addSequentialCommand(new MoveArmFor(2600, KMaxMotorSpeed));
   addParallelCommand(new MoveIntakeFor(2600, -KMaxMotorSpeed));
+  addParallelCommand(new MoveAnglerFor(2650, KMaxMotorSpeed));
+  addSequentialCommand(new MoveAnglerFor(2700, -KMaxMotorSpeed));
   addParallelCommand(new MoveIntakeFor(2700, KMaxMotorSpeed));
-  addParallelCommand(new MoveClawFor(2600, -KMaxMotorSpeed));
-  addParallelCommand(new MoveClawFor(2700, KMaxMotorSpeed));
   addSequentialCommand(new MoveArmFor(2650, -KMaxMotorSpeed));
   addSequentialCommand(new DriveForTime(KMaxMotorSpeed*0.50, KMaxMotorSpeed*0.50, 3000)); 
 //addParallelCommand(slipOffRubber);
   addParallelCommand(new MoveIntakeFor(3150, KMaxMotorSpeed));
   addSequentialCommand(new DriveForTime(-KMaxMotorSpeed*0.50, -KMaxMotorSpeed*0.50, 950));
   addParallelCommand(new MoveIntakeFor(50, -KMaxMotorSpeed));
-  addParallelCommand(new MoveClawFor(50, -KMaxMotorSpeed));
   addSequentialCommand(new DriveForTime(KMaxMotorSpeed*0.45, -KMaxMotorSpeed*0.45, 1200)); //* The TURN
+  addParallelCommand(new MoveAnglerFor(400, KMaxMotorSpeed));
   addSequentialCommand(new DriveForTime(KMaxMotorSpeed*0.50, KMaxMotorSpeed*0.50, 1050)); 
+  addSequentialCommand(new MoveAnglerFor(2400, KMaxMotorSpeed));
   addSequentialCommand(new MoveIntakeFor(750, -KMaxMotorSpeed));
-  addSequentialCommand(new MoveClawFor(750, -KMaxMotorSpeed));
   addSequentialCommand(new DriveForTime(-KMaxMotorSpeed, -KMaxMotorSpeed, 500));
 
   /**
