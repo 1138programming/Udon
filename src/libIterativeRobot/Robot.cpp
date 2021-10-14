@@ -4,7 +4,6 @@
 #include "libIterativeRobot/events/JoystickChannel.h"
 
 #include "libIterativeRobot/commands/Base/StopBase.h"
-#include "libIterativeRobot/commands/Angler/StopAngler.h"
 #include "libIterativeRobot/commands/Intake/StopIntake.h"
 #include "libIterativeRobot/commands/Base/DriveWithJoy.h"
 #include "libIterativeRobot/commands/Base/BaseLinearMovement.h"
@@ -12,13 +11,9 @@
 #include "libIterativeRobot/commands/Miscellaneous/GetData.h"
 #include "libIterativeRobot/commands/Miscellaneous/TuneLinearProfile.h"
 #include "libIterativeRobot/commands/Miscellaneous/FlipOut.h"
-#include "libIterativeRobot/commands/Angler/AnglerControl.h"
-#include "libIterativeRobot/commands/Angler/MoveAnglerTo.h"
 #include "libIterativeRobot/commands/Intake/IntakeControl.h"
 #include "libIterativeRobot/commands/Arm/ArmControl.h"
 #include "libIterativeRobot/commands/Arm/MoveArmTo.h"
-#include "libIterativeRobot/commands/Angler/MoveAnglerFor.h"
-#include "libIterativeRobot/commands/Angler/MoveAnglerTo.h"
 
 #include "libIterativeRobot/commands/LambdaGroup.h"
 #include "libIterativeRobot/commands/Auton/AutonGroup1.h"
@@ -32,7 +27,6 @@
 
 Robot* Robot::instance = 0;
 
-Angler* Robot::angler = 0;
 Arm* Robot::arm = 0;
 Base* Robot::base = 0;
 Intake* Robot::intake = 0;
@@ -47,7 +41,6 @@ Robot::Robot() {
 
   // Initialize any subsystems
   base = new Base();
-  angler  = new Angler();
   intake = new Intake();
   arm = new Arm();
 
@@ -77,14 +70,10 @@ Robot::Robot() {
   libIterativeRobot::JoystickChannel* LeftX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_LEFT_X);
   libIterativeRobot::JoystickButton* ArmToLowTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_B);
   libIterativeRobot::JoystickButton* ArmToMidTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_A);
-  libIterativeRobot::JoystickButton* AnglerDown = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R1);
-  libIterativeRobot::JoystickButton* AnglerUp = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R2);
+ 
   libIterativeRobot::JoystickButton* IntakeOpen = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L2);
   libIterativeRobot::JoystickButton* IntakeClose = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L1);
-  libIterativeRobot::JoystickButton* AnglerToStart = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_DOWN);
-  libIterativeRobot::JoystickButton* AnglerToHorizontal = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_RIGHT);
-  libIterativeRobot::JoystickButton* AnglerToTop = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_UP);
-  libIterativeRobot::JoystickButton* AnglerToBack = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_LEFT);
+  
   libIterativeRobot::JoystickButton* Turn180 = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_X);
 
   // Add commands to be run to buttons
@@ -98,14 +87,8 @@ Robot::Robot() {
   ArmControl* armControl = new ArmControl();
   RightY->whilePastThreshold(armControl);
 
-  //MoveAnglerTo* anglerToCollectingPos = new MoveAnglerTo(angler->kCollectingPosition);
-  //RightY->whenPassingThresholdForward(anglerToCollectingPos);
-
   ArmToLowTower->whenPressed(new MoveArmTo(Arm::kLowTowerPos));
   ArmToMidTower->whenPressed(new MoveArmTo(Arm::kMidTowerPos));
-
-  AnglerUp->whileHeld(new AnglerControl(true));
-  AnglerDown->whileHeld(new AnglerControl(false));
 
   IntakeControl* intakeOpen = new IntakeControl(true);
   IntakeControl* intakeClose = new IntakeControl(false);
@@ -115,11 +98,6 @@ Robot::Robot() {
   IntakeClose->whenPressed(intakeOpen, libIterativeRobot::Action::STOP);
   IntakeOpen->whenReleased(intakeOpen, libIterativeRobot::Action::STOP);
   IntakeClose->whenReleased(intakeClose, libIterativeRobot::Action::STOP);
-
-  AnglerToStart->whenPressed(new MoveAnglerTo(0));
-  AnglerToHorizontal->whenPressed(new MoveAnglerTo(680));
-  AnglerToTop->whenPressed(new MoveAnglerTo(8000, 100));
-  AnglerToBack->whenPressed(new MoveAnglerTo(8000, 100));
 
   //RotateBase* c = new RotateBase(180, 0.127, KMaxMotorSpeed, 100000);
   //Turn180->whenPressed(c);

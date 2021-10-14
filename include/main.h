@@ -44,7 +44,6 @@
 
 // Subsystems
 #include "libIterativeRobot/subsystems/Subsystem.h"
-#include "libIterativeRobot/subsystems/Angler.h"
 #include "libIterativeRobot/subsystems/Arm.h"
 #include "libIterativeRobot/subsystems/Base.h"
 #include "libIterativeRobot/subsystems/Intake.h"
@@ -59,7 +58,7 @@
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
- * Motor, you can use the namespace with the following commented out line.
+ * Motor, you can use the namespace with the following commented out line
  *
  * IMPORTANT: Only the okapi or pros namespace may be used, not both
  * concurrently! The okapi namespace will export all symbols inside the pros

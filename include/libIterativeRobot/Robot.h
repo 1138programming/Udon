@@ -22,7 +22,6 @@ class Robot : public libIterativeRobot::RobotBase {
     static Robot* getInstance();
 
     // Pointers to every subsystem on the robot:
-    static Angler*  angler;
     static Arm* arm;
     static Base* base;
     static Intake* intake;
