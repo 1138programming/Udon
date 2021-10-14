@@ -7,7 +7,8 @@ const double Arm::kMidTowerPos = 3000;
 
 Arm::Arm() {
   // Get intake motors
-  armMotor = Motor::getMotor(armMotorPort, armMotorGearset);
+  leftArmMotor = Motor::getMotor(leftArmMotorPort, armMotorGearset);
+  rightArmMotor = Motor::getMotor(rightArmMotorPort, armMotorGearset);
   armController = new PIDController(0.7, 0, 0);
   armController->setTolerance(25, 10);
 
@@ -32,20 +33,25 @@ void Arm::initDefaultCommand() {
  */
 void Arm::move(int speed) {
   if (bumper1->get_value() || bumper2->get_value()) {
-    armMotor->setSpeed(0);
+    leftArmMotor->setSpeed(0);
+    rightArmMotor->setSpeed(0);
     if (speed > 0) {
-      armMotor->setSpeed(speed);
+      leftArmMotor->setSpeed(speed);
+      rightArmMotor->setSpeed(speed);
     } else if (speed < 0) {
-      armMotor->setSpeed(0);
+      leftArmMotor->setSpeed(0);
+      rightArmMotor->setSpeed(0);
     }
-    armMotor->resetEncoder();
+    leftArmMotor->resetEncoder();
+    rightArmMotor->resetEncoder();
   } else {
-    armMotor->setSpeed(speed);
+    leftArmMotor->setSpeed(speed);
+    rightArmMotor->setSpeed(speed);
   }
 }
 
 double Arm::getSensorValue() {
-  return armMotor->getEncoderValue();
+  return leftArmMotor->getEncoderValue();
 }
 
 void Arm::setSetpoint(double setpoint) {
