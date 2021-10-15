@@ -48,6 +48,7 @@
 #include "libIterativeRobot/subsystems/Arm.h"
 #include "libIterativeRobot/subsystems/Base.h"
 #include "libIterativeRobot/subsystems/Intake.h"
+#include "libIterativeRobot/subsystems/Pneumatics.h"
 
 #include "libIterativeRobot/AutonChooser.h"
 

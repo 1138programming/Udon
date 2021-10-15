@@ -14,6 +14,8 @@
 #define MAX_FOLLOWERS 3
 
 // Motor ports
+const int DIGITAL_SENSOR_PORT_FRONT = 69;
+const int DIGITAL_SENSOR_PORT_BACK = 420;
 const int frontLeftBasePort = 1;
 const int frontRightBasePort = 2;
 const int backLeftBasePort = 11;
@@ -35,6 +37,7 @@ const pros::motor_gearset_e_t baseMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t clawMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t intakeMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t armMotorGearset = pros::E_MOTOR_GEARSET_06;
+
 
 // Global configurations
 const pros::motor_encoder_units_e_t globalEncoderUnits = pros::E_MOTOR_ENCODER_COUNTS;

@@ -23,6 +23,7 @@
 Robot* Robot::instance = 0;
 
 Claw* Robot::claw = 0;
+Pneumatics* Robot::pneumatics = 0;
 Arm* Robot::arm = 0;
 Base* Robot::base = 0;
 Intake* Robot::intake = 0;
@@ -37,6 +38,7 @@ Robot::Robot() {
 
   // Initialize any subsystems
   base = new Base();
+  pneumatics = new Pneumatics();
   claw  = new Claw();
   intake = new Intake();
   arm = new Arm();
