@@ -58,7 +58,6 @@ class Subsystem {
      */
     Subsystem();
 };
-
 };
 
 #endif // _SUBSYSTEMS_SUBSYSTEM_H_

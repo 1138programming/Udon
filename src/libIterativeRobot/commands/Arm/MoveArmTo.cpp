@@ -12,7 +12,7 @@ MoveArmTo::MoveArmTo(double target) {
 MoveArmTo::MoveArmTo(double target, int duration) {
   requires(Robot::arm);
   this->priority = 1;
-  this->target = target;
+  this->target = target; 
   this->duration = duration;
 }
 

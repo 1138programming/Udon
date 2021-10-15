@@ -10,9 +10,6 @@ Arm::Arm() {
   armMotor = Motor::getMotor(armMotorPort, armMotorGearset);
   armController = new PIDController(0.7, 0, 0);
   armController->setTolerance(25, 10);
-
-  bumper1 = new pros::ADIDigitalIn(bumperPort1);
-  bumper2 = new pros::ADIDigitalIn(bumperPort2);
 }
 
 void Arm::initDefaultCommand() {
@@ -31,17 +28,7 @@ void Arm::initDefaultCommand() {
  * @param speed - speed of the speed arm motor
  */
 void Arm::move(int speed) {
-  if (bumper1->get_value() || bumper2->get_value()) {
-    armMotor->setSpeed(0);
-    if (speed > 0) {
-      armMotor->setSpeed(speed);
-    } else if (speed < 0) {
-      armMotor->setSpeed(0);
-    }
-    armMotor->resetEncoder();
-  } else {
-    armMotor->setSpeed(speed);
-  }
+  armMotor->setSpeed(speed);
 }
 
 double Arm::getSensorValue() {
