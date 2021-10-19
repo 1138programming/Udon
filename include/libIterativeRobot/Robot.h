@@ -25,6 +25,7 @@ class Robot : public libIterativeRobot::RobotBase {
     static Arm* arm;
     static Base* base;
     static Intake* intake;
+    static Claw* claw;
 
     static AutonChooser* autonChooser;
 

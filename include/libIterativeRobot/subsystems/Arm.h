@@ -9,11 +9,11 @@ class Arm : public libIterativeRobot::Subsystem {
   private:
     Motor* armMotor;
     PIDController* armController;
-    pros::ADIDigitalIn* bumper1;
-    pros::ADIDigitalIn* bumper2;
+    // pros::ADIDigitalIn* bumper1;
+    // pros::ADIDigitalIn* bumper2;
   public:
-    static const double kLowTowerPos;
-    static const double kMidTowerPos;
+    // static const double kLowTowerPos;
+    // static const double kMidTowerPos;
 
     void initDefaultCommand();
     void move(int speed);

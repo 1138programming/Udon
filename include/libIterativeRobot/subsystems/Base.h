@@ -13,6 +13,8 @@ class Base : public libIterativeRobot::Subsystem {
     // Base motors
     Motor* frontLeftMotor;
     Motor* frontRightMotor;
+    Motor* midLeftMotor;
+    Motor* midRightMotor;
     Motor* backLeftMotor;
     Motor* backRightMotor;
 

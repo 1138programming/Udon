@@ -2,13 +2,10 @@
 #include "libIterativeRobot/commands/Intake/StopIntake.h"
 
 Intake::Intake() {
-  // Get intake motors
-  leftIntakeMotor = Motor::getMotor(leftIntakeMotorPort, intakeMotorGearset);
-  rightIntakeMotor = Motor::getMotor(rightIntakeMotorPort, intakeMotorGearset);
+  // Get intake motor
+  intakeMotor = Motor::getMotor(IntakeMotorPort, intakeMotorGearset);
 
-  rightIntakeMotor->reverse();
-  leftIntakeMotor->getMotorObject()->set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-  rightIntakeMotor->getMotorObject()->set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+  intakeMotor->getMotorObject()->set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 }
 
 void Intake::initDefaultCommand() {
@@ -22,7 +19,6 @@ void Intake::initDefaultCommand() {
  */
 
 void Intake::move(int speed) {
-  leftIntakeMotor->setSpeed(speed);
-  rightIntakeMotor->setSpeed(speed);
+  intakeMotor->setSpeed(speed);
   //printf("Motor speed set to %d\n", speed);
 }

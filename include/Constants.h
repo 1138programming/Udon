@@ -14,21 +14,31 @@
 #define MAX_FOLLOWERS 3
 
 // Motor ports
-const int frontLeftBasePort = 1;
-const int frontRightBasePort = 2;
+const int frontLeftBasePort = 13;
+const int frontRightBasePort = 18;
+const int midLeftBasePort = 12;
+const int midRightBasePort = 19;
 const int backLeftBasePort = 11;
-const int backRightBasePort = 12;
+const int backRightBasePort = 20;
 
-const int leftIntakeMotorPort = 10;
-const int rightIntakeMotorPort = 9;
+const int IntakeMotorPort = 16;
 
-const int armMotorPort = 11;
+const int armMotorPort = 1;
 
-const std::uint8_t bumperPort1 = 'g';
+//ADI Digital Ports
 
-const std::uint8_t bumperPort2 = 'h';
+const std::uint8_t clawPistonPort = 'a';
+const std::uint8_t leftPistonPort = 'b';
+const std::uint8_t rightPistonPort = 'c';
+
 
 // Motor gearsets
+/*   reference:
+pros::E_MOTOR_GEARSET_36----------36:1, 100 RPM, Red gear set
+pros::E_MOTOR_GEARSET_18----------18:1, 200 RPM, Green gear set
+pros::E_MOTOR_GEARSET_06----------6:1, 600 RPM, Blue Gear Set
+pros::E_MOTOR_GEARSET_INVALID-----Error return code
+*/
 const pros::motor_gearset_e_t baseMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t intakeMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t armMotorGearset = pros::E_MOTOR_GEARSET_06;
@@ -50,6 +60,6 @@ const int exampleEncoderTopPort = 0;
 const int exampleEncoderBottomPort = 1;
 
 // Global things that we need
-const int imuPort = 20;
+const int imuPort = 0; //not added yet
 
 #endif

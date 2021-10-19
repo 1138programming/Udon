@@ -5,6 +5,8 @@
 
 #include "libIterativeRobot/commands/Base/StopBase.h"
 #include "libIterativeRobot/commands/Intake/StopIntake.h"
+#include "libIterativeRobot/commands/Intake/IntakeIn.h"
+#include "libIterativeRobot/commands/Intake/IntakeOut.h"
 #include "libIterativeRobot/commands/Base/DriveWithJoy.h"
 #include "libIterativeRobot/commands/Base/BaseLinearMovement.h"
 #include "libIterativeRobot/commands/Base/RotateBase.h"
@@ -14,6 +16,12 @@
 #include "libIterativeRobot/commands/Intake/IntakeControl.h"
 #include "libIterativeRobot/commands/Arm/ArmControl.h"
 #include "libIterativeRobot/commands/Arm/MoveArmTo.h"
+#include "libIterativeRobot/commands/Arm/MoveArmUp.h"
+#include "libIterativeRobot/commands/Arm/MoveArmDown.h"
+#include "libIterativeRobot/commands/Claw/ClawUp.h"
+#include "libIterativeRobot/commands/Claw/ClawDown.h"
+#include "libIterativeRobot/commands/Claw/GoalIn.h"
+#include "libIterativeRobot/commands/Claw/GoalOut.h"
 
 #include "libIterativeRobot/commands/LambdaGroup.h"
 #include "libIterativeRobot/commands/Auton/AutonGroup1.h"
@@ -24,6 +32,7 @@ Robot* Robot::instance = 0;
 Arm* Robot::arm = 0;
 Base* Robot::base = 0;
 Intake* Robot::intake = 0;
+Claw* Robot::claw = 0;
 
 AutonChooser* Robot::autonChooser = 0;
 
@@ -37,6 +46,7 @@ Robot::Robot() {
   base = new Base();
   intake = new Intake();
   arm = new Arm();
+  claw = new Claw();
 
   /**
    * You can tune the base's rotation PID constants here. The numbers are the P, I, and D constants.
@@ -50,7 +60,7 @@ Robot::Robot() {
    * The I constant gets rid of steady state error, or error that doesn't go away with just the P and D constants. For example,
    * if the base doesn't get fully to its setpoint, you might need to increase the I constant. Most likely you won't have to though.
    */
-  base->setRotationPIDConstants(0.6, 0, 0);
+  // base->setRotationPIDConstants(0.6, 0, 0);
 
   autonChooser = AutonChooser::getInstance();
 
@@ -62,17 +72,17 @@ Robot::Robot() {
   libIterativeRobot::JoystickChannel* LeftY = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_LEFT_Y);
   libIterativeRobot::JoystickChannel* RightX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_RIGHT_X);
   libIterativeRobot::JoystickChannel* LeftX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_LEFT_X);
-  libIterativeRobot::JoystickButton* ArmToLowTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_B);
-  libIterativeRobot::JoystickButton* ArmToMidTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_A);
+  // libIterativeRobot::JoystickButton* ArmToMidTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_A);
   // libIterativeRobot::JoystickButton* AnglerDown = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R1);
   // libIterativeRobot::JoystickButton* AnglerUp = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R2);
-  libIterativeRobot::JoystickButton* IntakeOpen = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L2);
-  libIterativeRobot::JoystickButton* IntakeClose = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L1);
+  // libIterativeRobot::JoystickButton* IntakeOpen = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L2);
+  // libIterativeRobot::JoystickButton* IntakeClose = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L1);
   // libIterativeRobot::JoystickButton* AnglerToStart = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_DOWN);
   // libIterativeRobot::JoystickButton* AnglerToHorizontal = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_RIGHT);
   // libIterativeRobot::JoystickButton* AnglerToTop = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_UP);
   // libIterativeRobot::JoystickButton* AnglerToBack = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_LEFT);
-  libIterativeRobot::JoystickButton* Turn180 = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_X);
+  libIterativeRobot::JoystickButton* MoveArmUp = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_X);
+  libIterativeRobot::JoystickButton* MoveArmDown = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_B);
 
   // Add commands to be run to buttons
   LeftX->setThreshold(50);
@@ -88,17 +98,17 @@ Robot::Robot() {
   //MoveAnglerTo* anglerToCollectingPos = new MoveAnglerTo(angler->kCollectingPosition);
   //RightY->whenPassingThresholdForward(anglerToCollectingPos);
 
-  ArmToLowTower->whenPressed(new MoveArmTo(Arm::kLowTowerPos));
-  ArmToMidTower->whenPressed(new MoveArmTo(Arm::kMidTowerPos));
+  // ArmToLowTower->whenPressed(new MoveArmTo(Arm::kLowTowerPos));
+  // ArmToMidTower->whenPressed(new MoveArmTo(Arm::kMidTowerPos));
 
   IntakeControl* intakeOpen = new IntakeControl(true);
   IntakeControl* intakeClose = new IntakeControl(false);
-  IntakeOpen->whenPressed(intakeOpen);
-  IntakeOpen->whenPressed(intakeClose, libIterativeRobot::Action::STOP);
-  IntakeClose->whenPressed(intakeClose);
-  IntakeClose->whenPressed(intakeOpen, libIterativeRobot::Action::STOP);
-  IntakeOpen->whenReleased(intakeOpen, libIterativeRobot::Action::STOP);
-  IntakeClose->whenReleased(intakeClose, libIterativeRobot::Action::STOP);
+  // IntakeOpen->whenPressed(intakeOpen);
+  // IntakeOpen->whenPressed(intakeClose, libIterativeRobot::Action::STOP);
+  // IntakeClose->whenPressed(intakeClose);
+  // IntakeClose->whenPressed(intakeOpen, libIterativeRobot::Action::STOP);
+  // IntakeOpen->whenReleased(intakeOpen, libIterativeRobot::Action::STOP);
+  // IntakeClose->whenReleased(intakeClose, libIterativeRobot::Action::STOP);
 
   //RotateBase* c = new RotateBase(180, 0.127, KMaxMotorSpeed, 100000);
   //Turn180->whenPressed(c);

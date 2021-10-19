@@ -12,6 +12,8 @@ Base::Base() {
   // Set up motors
   frontLeftMotor = Motor::getMotor(frontLeftBasePort, baseMotorGearset);
   frontRightMotor = Motor::getMotor(frontRightBasePort, baseMotorGearset);
+  midLeftMotor = Motor::getMotor(midLeftBasePort, baseMotorGearset);
+  midRightMotor = Motor::getMotor(midRightBasePort, baseMotorGearset);
   backLeftMotor = Motor::getMotor(backLeftBasePort, baseMotorGearset);
   backRightMotor = Motor::getMotor(backRightBasePort, baseMotorGearset);
 
@@ -21,13 +23,16 @@ Base::Base() {
   backRightMotor->getMotorObject()->set_brake_mode(pros::motor_brake_mode_e_t::E_MOTOR_BRAKE_COAST);
 
   frontRightMotor->reverse();
+  midRightMotor->reverse();
   backRightMotor->reverse();
-  //backRightMotor->reverse();
-  //frontRightMotor->reverse();
+  
   frontRightMotor->reverseEncoder();
+  midRightMotor->reverseEncoder();
   frontLeftMotor->reverseEncoder();
 
+  frontLeftMotor->addFollower(midLeftMotor);
   frontLeftMotor->addFollower(backLeftMotor);
+  frontRightMotor->addFollower(midRightMotor);
   frontRightMotor->addFollower(backRightMotor);
 
   //leftProfiler = new LinearProfiler(2, 0.017, 0.7, 0, 0, 0, 0);

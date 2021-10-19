@@ -2,8 +2,8 @@
 #include "libIterativeRobot/commands/Arm/StopArm.h"
 #include "libIterativeRobot/commands/Arm/ArmControl.h"
 
-const double Arm::kLowTowerPos = 2500;
-const double Arm::kMidTowerPos = 3000;
+// const double Arm::kLowTowerPos = 2500;
+// const double Arm::kMidTowerPos = 3000;
 
 Arm::Arm() {
   // Get intake motors
@@ -11,19 +11,18 @@ Arm::Arm() {
   armController = new PIDController(0.7, 0, 0);
   armController->setTolerance(25, 10);
 
-  bumper1 = new pros::ADIDigitalIn(bumperPort1);
-  bumper2 = new pros::ADIDigitalIn(bumperPort2);
+//   bumper1 = new pros::ADIDigitalIn(bumperPort1);
+//   bumper2 = new pros::ADIDigitalIn(bumperPort2);
 }
 
 void Arm::initDefaultCommand() {
-  if (pros::E_CONTROLLER_DIGITAL_X > abs(20)) {
-    setDefaultCommand(new ArmControl());
-  }
-  else
-  {
+  // if (pros::E_CONTROLLER_DIGITAL_X > abs(20)) {
+  //   setDefaultCommand(new ArmControl());
+  // }
+  // else
+  // {
     setDefaultCommand(new StopArm());
-  }
-  
+  // }
 }
 
 /**
@@ -31,17 +30,17 @@ void Arm::initDefaultCommand() {
  * @param speed - speed of the speed arm motor
  */
 void Arm::move(int speed) {
-  if (bumper1->get_value() || bumper2->get_value()) {
-    armMotor->setSpeed(0);
-    if (speed > 0) {
-      armMotor->setSpeed(speed);
-    } else if (speed < 0) {
-      armMotor->setSpeed(0);
-    }
-    armMotor->resetEncoder();
-  } else {
+  // if (bumper1->get_value() || bumper2->get_value()) {
+  //   armMotor->setSpeed(0);
+  //   if (speed > 0) {
+  //     armMotor->setSpeed(speed);
+  //   } else if (speed < 0) {
+  //     armMotor->setSpeed(0);
+  //   }
+  //   armMotor->resetEncoder();
+  // } else {
     armMotor->setSpeed(speed);
-  }
+  // }
 }
 
 double Arm::getSensorValue() {
