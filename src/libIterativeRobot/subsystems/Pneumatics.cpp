@@ -1,8 +1,9 @@
 #include "main.h"
-//#include "libIterativeRobot/commands/Pneumatics/BackPisonIn.h"
-//#include "libIterativeRobot/commands/Pneumatics/FrontPisonIn.h"
-//#include "libIterativeRobot/commands/Pneumatics/FrontPisonOut.h"
-//#include "libIterativeRobot/commands/Pneumatics/Pneumatics.h"
+#include "libIterativeRobot/commands/Pneumatics/DefaultPiston.h"
+/*#include "libIterativeRobot/commands/Pneumatics/BackPistonIn.h"
+#include "libIterativeRobot/commands/Pneumatics/BackPistonOut.h"
+#include "libIterativeRobot/commands/Pneumatics/FrontPistonIn.h"
+#include "libIterativeRobot/commands/Pneumatics/FrontPistonOut.h"*/
 
 Pneumatics::Pneumatics() {
   FrontPiston = new pros::ADIDigitalOut(DIGITAL_PISTON_PORT_FRONT);
@@ -10,35 +11,38 @@ Pneumatics::Pneumatics() {
   
 }
 
+void Pneumatics::initDefaultCommand() {
+}
+
 void Pneumatics::S_FrontPistonIn() {
-    if (Pneumatics::pneumaticsPistonPos)
+    if (Pneumatics::pneumaticsFrontPistonPos)
     {
         FrontPiston->set_value(false);
-        Pneumatics::pneumaticsPistonPos = false;
+        Pneumatics::pneumaticsFrontPistonPos = false;
     }
     
 }
 
 void Pneumatics::S_BackPistonIn() {
-    if (Pneumatics::pneumaticsPistonPos)
+    if (Pneumatics::pneumaticsBackPistonPos)
     {
         BackPiston->set_value(false);
-        Pneumatics::pneumaticsPistonPos = false;
+        Pneumatics::pneumaticsBackPistonPos = false;
     }
 }
 
 void Pneumatics::S_FrontPistonOut() {
-    if (!Pneumatics::pneumaticsPistonPos)
+    if (!Pneumatics::pneumaticsFrontPistonPos)
     {
         FrontPiston->set_value(true);
-        Pneumatics::pneumaticsPistonPos = true;
+        Pneumatics::pneumaticsFrontPistonPos = true;
     }
 }
 
 void Pneumatics::S_BackPistonOut() {
-    if (!Pneumatics::pneumaticsPistonPos)
+    if (!Pneumatics::pneumaticsBackPistonPos)
     {
         BackPiston->set_value(true);
-        Pneumatics::pneumaticsPistonPos = true;
+        Pneumatics::pneumaticsBackPistonPos = true;
     }
 }
