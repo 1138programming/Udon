@@ -1,9 +1,9 @@
-#ifndef _COMMANDS_STOPCLAW_H_
-#define _COMMANDS_STOPCLAW_H_
+#ifndef _COMMANDS_BACKPISTONIN_H_
+#define _COMMANDS_BACKPISTONIN_H_
 
 #include "libIterativeRobot/commands/Command.h"
 
-class StopClaw: public libIterativeRobot::Command {
+class BackPistonIn: public libIterativeRobot::Command {
   public:
     bool canRun();
     void initialize();
@@ -12,8 +12,8 @@ class StopClaw: public libIterativeRobot::Command {
     void end();
     void interrupted();
     void blocked();
-    StopClaw();
+    BackPistonIn();
   private:
 };
 
-#endif // _COMMANDS_STOPCLAW_H_
+#endif // _COMMANDS_PNEUMATICSCONTROL_H_

@@ -11,9 +11,6 @@ Arm::Arm() {
   rightArmMotor = Motor::getMotor(rightArmMotorPort, armMotorGearset);
   armController = new PIDController(0.7, 0, 0);
   armController->setTolerance(25, 10);
-
-  bumper1 = new pros::ADIDigitalIn(bumperPort1);
-  bumper2 = new pros::ADIDigitalIn(bumperPort2);
 }
 
 void Arm::initDefaultCommand() {

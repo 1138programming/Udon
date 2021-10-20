@@ -6,12 +6,15 @@
 
 class Pneumatics : public libIterativeRobot::Subsystem {
   private:
-    pros::ADIDigitalOut FrontPiston;
-    pros::ADIDigitalOut BackPiston;
+    pros::ADIDigitalOut* FrontPiston;
+    pros::ADIDigitalOut* BackPiston;
   public:
+    static bool pneumaticsPistonPos;
     void initDefaultCommand();
-    void moveFrontPiston(int speed);
-    void moveBackPiston(int speed);
+    void S_BackPistonIn();
+    void S_FrontPistonIn();
+    void S_BackPistonOut();
+    void S_FrontPistonOut();
     Pneumatics();
 };
 

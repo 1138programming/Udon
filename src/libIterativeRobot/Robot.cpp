@@ -5,7 +5,6 @@
 
 #include "libIterativeRobot/commands/Base/StopBase.h"
 #include "libIterativeRobot/commands/Intake/StopIntake.h"
-#include "libIterativeRobot/commands/Claw/StopClaw.h"
 #include "libIterativeRobot/commands/Base/DriveWithJoy.h"
 #include "libIterativeRobot/commands/Base/BaseLinearMovement.h"
 #include "libIterativeRobot/commands/Base/RotateBase.h"
@@ -13,16 +12,18 @@
 #include "libIterativeRobot/commands/Miscellaneous/TuneLinearProfile.h"
 #include "libIterativeRobot/commands/Miscellaneous/FlipOut.h"
 #include "libIterativeRobot/commands/Intake/IntakeControl.h"
-#include "libIterativeRobot/commands/Claw/ClawControl.h"
 #include "libIterativeRobot/commands/Arm/ArmControl.h"
 #include "libIterativeRobot/commands/Arm/MoveArmTo.h"
+#include "libIterativeRobot/commands/Pneumatics/BackPistonIn.h"
+#include "libIterativeRobot/commands/Pneumatics/BackPistonOut.h"
+#include "libIterativeRobot/commands/Pneumatics/FrontPistonIn.h"
+#include "libIterativeRobot/commands/Pneumatics/FrontPistonOut.h"
 
 #include "libIterativeRobot/commands/LambdaGroup.h"
 #include "libIterativeRobot/commands/Auton/AutonGroup1.h"
 
 Robot* Robot::instance = 0;
 
-Claw* Robot::claw = 0;
 Pneumatics* Robot::pneumatics = 0;
 Arm* Robot::arm = 0;
 Base* Robot::base = 0;
@@ -39,7 +40,6 @@ Robot::Robot() {
   // Initialize any subsystems
   base = new Base();
   pneumatics = new Pneumatics();
-  claw  = new Claw();
   intake = new Intake();
   arm = new Arm();
 
@@ -66,14 +66,15 @@ Robot::Robot() {
   libIterativeRobot::JoystickChannel* RightY = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_RIGHT_Y);
   libIterativeRobot::JoystickChannel* LeftY = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_LEFT_Y);
  //libIterativeRobot::JoystickChannel* RightX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_RIGHT_X);
- //libIterativeRobot::JoystickChannel* LeftX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_LEFT_X);
-  libIterativeRobot::JoystickButton* ArmToLowTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L2);
-  libIterativeRobot::JoystickButton* ArmToMidTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L1);
-  libIterativeRobot::JoystickButton* IntakeOpen = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_UP);
-  libIterativeRobot::JoystickButton* IntakeClose = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_DOWN);
-  libIterativeRobot::JoystickButton* ClawOpen = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R1);
-  libIterativeRobot::JoystickButton* ClawClose = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R2);
-  libIterativeRobot::JoystickButton* Turn180 = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_X);
+ //libIterativeRobot::JoystickChannel* LeftX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_AN ALOG_LEFT_X);
+  libIterativeRobot::JoystickButton* ArmToLowTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R2);
+  libIterativeRobot::JoystickButton* ArmToMidTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R1);
+  libIterativeRobot::JoystickButton* IntakeOpen = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L2);
+  libIterativeRobot::JoystickButton* IntakeClose = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L1);
+  libIterativeRobot::JoystickButton* FrontPistonOut = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_X);
+  libIterativeRobot::JoystickButton* FrontPistonIn = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_B);
+  libIterativeRobot::JoystickButton* BackPistonOut = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_UP);
+  libIterativeRobot::JoystickButton* BackPistonIn = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_DOWN);
 
   // Add commands to be run to buttons
   RightY->setThreshold(50);
@@ -100,15 +101,6 @@ Robot::Robot() {
   IntakeClose->whenPressed(intakeOpen, libIterativeRobot::Action::STOP);
   IntakeOpen->whenReleased(intakeOpen, libIterativeRobot::Action::STOP);
   IntakeClose->whenReleased(intakeClose, libIterativeRobot::Action::STOP);
-
-  ClawControl* clawOpen = new ClawControl(true);
-  ClawControl* clawClose = new ClawControl(false);
-  ClawOpen->whenPressed(clawOpen);
-  ClawOpen->whenPressed(clawClose, libIterativeRobot::Action::STOP);
-  ClawClose->whenPressed(clawClose);
-  ClawClose->whenPressed(clawOpen, libIterativeRobot::Action::STOP);
-  ClawOpen->whenReleased(clawOpen, libIterativeRobot::Action::STOP);
-  ClawClose->whenReleased(clawClose, libIterativeRobot::Action::STOP);
 
   //RotateBase* c = new RotateBase(180, 0.127, KMaxMotorSpeed, 100000);
   //Turn180->whenPressed(c);

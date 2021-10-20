@@ -14,27 +14,21 @@
 #define MAX_FOLLOWERS 3
 
 // Motor ports
-const int DIGITAL_SENSOR_PORT_FRONT = 69;
-const int DIGITAL_SENSOR_PORT_BACK = 420;
-const int frontLeftBasePort = 1;
-const int frontRightBasePort = 2;
-const int backLeftBasePort = 11;
-const int backRightBasePort = 12;
+const int frontLeftBasePort = 9;
+const int frontRightBasePort = 16;
+const int backLeftBasePort = 3;
+const int backRightBasePort = 10;
+const int intakeMotorPort = 19;
 
-const int clawMotorPort = 6;
-const int intakeMotorPort = 10;
+const int leftArmMotorPort = 18;
+const int rightArmMotorPort = 15;
 
-const int leftArmMotorPort = 19;
-const int rightArmMotorPort = 20;
-
-const std::uint8_t bumperPort1 = 'g';
-
+const std::uint8_t DIGITAL_PISTON_PORT_FRONT = 'e';
 // @ -31,7 +31,7 @@
-const std::uint8_t bumperPort2 = 'h';
+const std::uint8_t DIGITAL_PISTON_PORT_BACK = 'h';
 
 // Motor gearsets
 const pros::motor_gearset_e_t baseMotorGearset = pros::E_MOTOR_GEARSET_18;
-const pros::motor_gearset_e_t clawMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t intakeMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t armMotorGearset = pros::E_MOTOR_GEARSET_06;
 

@@ -1,9 +1,9 @@
-#ifndef _COMMANDS_CLAWCONTROL_H_
-#define _COMMANDS_CLAWCONTROL_H_
+#ifndef _COMMANDS_FRONTPISTONOUT_H_
+#define _COMMANDS_FRONTPISTONOUT_H_
 
 #include "libIterativeRobot/commands/Command.h"
 
-class ClawControl: public libIterativeRobot::Command {
+class FrontPistonOut: public libIterativeRobot::Command {
   public:
     bool canRun();
     void initialize();
@@ -12,9 +12,8 @@ class ClawControl: public libIterativeRobot::Command {
     void end();
     void interrupted();
     void blocked();
-    ClawControl(bool Open);
+    FrontPistonOut();
   private:
-    bool Open;
 };
 
-#endif // _COMMANDS_CLAWCONTROL_H_
+#endif // _COMMANDS_PNEUMATICSCONTROL_H_

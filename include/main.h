@@ -44,11 +44,10 @@
 
 // Subsystems
 #include "libIterativeRobot/subsystems/Subsystem.h"
-#include "libIterativeRobot/subsystems/Claw.h"
+#include "libIterativeRobot/subsystems/Pneumatics.h"
 #include "libIterativeRobot/subsystems/Arm.h"
 #include "libIterativeRobot/subsystems/Base.h"
 #include "libIterativeRobot/subsystems/Intake.h"
-#include "libIterativeRobot/subsystems/Pneumatics.h"
 
 #include "libIterativeRobot/AutonChooser.h"
 
