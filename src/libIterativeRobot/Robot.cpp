@@ -72,46 +72,46 @@ Robot::Robot() {
   libIterativeRobot::JoystickChannel* LeftY = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_LEFT_Y);
   libIterativeRobot::JoystickChannel* RightX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_RIGHT_X);
   libIterativeRobot::JoystickChannel* LeftX = new libIterativeRobot::JoystickChannel(mainController, pros::E_CONTROLLER_ANALOG_LEFT_X);
-  // libIterativeRobot::JoystickButton* ArmToMidTower = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_A);
-  // libIterativeRobot::JoystickButton* AnglerDown = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R1);
-  // libIterativeRobot::JoystickButton* AnglerUp = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R2);
-  // libIterativeRobot::JoystickButton* IntakeOpen = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L2);
-  // libIterativeRobot::JoystickButton* IntakeClose = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L1);
-  // libIterativeRobot::JoystickButton* AnglerToStart = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_DOWN);
-  // libIterativeRobot::JoystickButton* AnglerToHorizontal = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_RIGHT);
-  // libIterativeRobot::JoystickButton* AnglerToTop = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_UP);
-  // libIterativeRobot::JoystickButton* AnglerToBack = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_LEFT);
-  libIterativeRobot::JoystickButton* MoveArmUp = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_X);
-  libIterativeRobot::JoystickButton* MoveArmDown = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_B);
+  libIterativeRobot::JoystickButton* ButtonA = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_A);
+  libIterativeRobot::JoystickButton* ButtonB = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_B);
+  libIterativeRobot::JoystickButton* ButtonX = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_X);
+  libIterativeRobot::JoystickButton* ButtonY = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_Y);
+  libIterativeRobot::JoystickButton* RTop = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R1);
+  libIterativeRobot::JoystickButton* RBot = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_R2);
+  libIterativeRobot::JoystickButton* LTop = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L1);
+  libIterativeRobot::JoystickButton* LBot = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_L2);
+  libIterativeRobot::JoystickButton* Down = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_DOWN);
+  libIterativeRobot::JoystickButton* Right = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_RIGHT);
+  libIterativeRobot::JoystickButton* Up = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_UP);
+  libIterativeRobot::JoystickButton* Left = new libIterativeRobot::JoystickButton(mainController, pros::E_CONTROLLER_DIGITAL_LEFT);
 
-  // Add commands to be run to buttons
+  //Add commands to be run to buttons
   LeftX->setThreshold(50);
   LeftY->setThreshold(50);
+  RightX->setThreshold(50);
+  RightY->setThreshold(50);
   DriveWithJoy* driveCommand = new DriveWithJoy();
   LeftX->whilePastThreshold(driveCommand);
   LeftY->whilePastThreshold(driveCommand);
+  RightX->whilePastThreshold(driveCommand);
+  RightY->whilePastThreshold(driveCommand);
 
-  RightY->setThreshold(20);
-  ArmControl* armControl = new ArmControl();
-  RightY->whilePastThreshold(armControl);
+  // RightY->setThreshold(20);
+  // ArmControl* armControl = new ArmControl();
+  // RightY->whilePastThreshold(armControl);
+  ButtonX->whenPressed(new MoveArmUp());
+  ButtonB->whenPressed(new MoveArmDown());
 
-  //MoveAnglerTo* anglerToCollectingPos = new MoveAnglerTo(angler->kCollectingPosition);
-  //RightY->whenPassingThresholdForward(anglerToCollectingPos);
+  RTop->whenPressed(new ClawUp());
+  RBot->whenPressed(new ClawDown());
 
-  // ArmToLowTower->whenPressed(new MoveArmTo(Arm::kLowTowerPos));
-  // ArmToMidTower->whenPressed(new MoveArmTo(Arm::kMidTowerPos));
+  LTop->whenPressed(new GoalIn());
+  LBot->whenPressed(new GoalOut());
 
-  IntakeControl* intakeOpen = new IntakeControl(true);
-  IntakeControl* intakeClose = new IntakeControl(false);
-  // IntakeOpen->whenPressed(intakeOpen);
-  // IntakeOpen->whenPressed(intakeClose, libIterativeRobot::Action::STOP);
-  // IntakeClose->whenPressed(intakeClose);
-  // IntakeClose->whenPressed(intakeOpen, libIterativeRobot::Action::STOP);
-  // IntakeOpen->whenReleased(intakeOpen, libIterativeRobot::Action::STOP);
-  // IntakeClose->whenReleased(intakeClose, libIterativeRobot::Action::STOP);
+  Up->whenPressed(new IntakeIn());
+  Down->whenPressed(new IntakeOut());
+  
 
-  //RotateBase* c = new RotateBase(180, 0.127, KMaxMotorSpeed, 100000);
-  //Turn180->whenPressed(c);
 }
 
 void Robot::robotInit() {

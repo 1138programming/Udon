@@ -11,12 +11,11 @@ class Claw : public libIterativeRobot::Subsystem {
     pros::ADIDigitalOut* leftPiston;
     pros::ADIDigitalOut* rightPiston; 
 
-  protected:   
+    bool clawPistonPos;
+    bool leftPistonPos;
+    bool rightPistonPos;
 
   public:
-    static bool clawPistonPos;
-    static bool leftPistonPos;
-    static bool rightPistonPos;
     void initDefaultCommand();
     void S_ClawUp();
     void S_ClawDown();
