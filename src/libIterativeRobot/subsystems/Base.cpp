@@ -1,6 +1,7 @@
 #include "main.h"
 #include "libIterativeRobot/Robot.h"
 #include "libIterativeRobot/commands/Base/StopBase.h"
+#include "libIterativeRobot/commands/Base/DriveWithJoy.h"
 
 const double Base::kDefaultMaxAccel = 0.127;
 const double Base::kDefaultMaxVel = 2; // Max is 3.6
@@ -18,22 +19,24 @@ Base::Base() {
   backRightMotor = Motor::getMotor(backRightBasePort, baseMotorGearset);
 
   frontLeftMotor->getMotorObject()->set_brake_mode(pros::motor_brake_mode_e_t::E_MOTOR_BRAKE_COAST);
+  midLeftMotor->getMotorObject()->set_brake_mode(pros::motor_brake_mode_e_t::E_MOTOR_BRAKE_COAST);
   backLeftMotor->getMotorObject()->set_brake_mode(pros::motor_brake_mode_e_t::E_MOTOR_BRAKE_COAST);
   frontRightMotor->getMotorObject()->set_brake_mode(pros::motor_brake_mode_e_t::E_MOTOR_BRAKE_COAST);
+  midRightMotor->getMotorObject()->set_brake_mode(pros::motor_brake_mode_e_t::E_MOTOR_BRAKE_COAST);
   backRightMotor->getMotorObject()->set_brake_mode(pros::motor_brake_mode_e_t::E_MOTOR_BRAKE_COAST);
 
-  frontRightMotor->reverse();
-  midRightMotor->reverse();
-  backRightMotor->reverse();
+  // frontRightMotor->reverse();
+  // midRightMotor->reverse();
+  // backRightMotor->reverse();
   
-  frontRightMotor->reverseEncoder();
-  midRightMotor->reverseEncoder();
-  frontLeftMotor->reverseEncoder();
+  // frontRightMotor->reverseEncoder();
+  // midRightMotor->reverseEncoder();
+  // frontLeftMotor->reverseEncoder();
 
-  frontLeftMotor->addFollower(midLeftMotor);
-  frontLeftMotor->addFollower(backLeftMotor);
-  frontRightMotor->addFollower(midRightMotor);
-  frontRightMotor->addFollower(backRightMotor);
+  // frontLeftMotor->addFollower(midLeftMotor);
+  // frontLeftMotor->addFollower(backLeftMotor);
+  // frontRightMotor->addFollower(midRightMotor);
+  // frontRightMotor->addFollower(backRightMotor);
 
   //leftProfiler = new LinearProfiler(2, 0.017, 0.7, 0, 0, 0, 0);
   //rightProfiler = new LinearProfiler(2, 0.017, 0.7, 0, 0, 0, 0);
@@ -60,7 +63,8 @@ Base::Base() {
 
 void Base::initDefaultCommand() {
   // Setup up a default command here
-  setDefaultCommand(new StopBase());
+  // setDefaultCommand(new StopBase());
+  // setDefaultCommand(new DriveWithJoy());
 }
 
 /**
@@ -77,6 +81,10 @@ void Base::move(int leftSpeed, int rightSpeed) {
   //printf("Left speed: %d, Right speed: %d\n", leftSpeed, rightSpeed);
   frontLeftMotor->setSpeed(leftSpeed);
   frontRightMotor->setSpeed(rightSpeed);
+  midLeftMotor->setSpeed(leftSpeed);
+  midRightMotor->setSpeed(rightSpeed);
+  backLeftMotor->setSpeed(leftSpeed);
+  backRightMotor->setSpeed(rightSpeed);
 }
 
 double Base::getLeftSensorValue() {

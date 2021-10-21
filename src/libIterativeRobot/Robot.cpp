@@ -99,17 +99,17 @@ Robot::Robot() {
   // RightY->setThreshold(20);
   // ArmControl* armControl = new ArmControl();
   // RightY->whilePastThreshold(armControl);
-  ButtonX->whenPressed(new MoveArmUp());
-  ButtonB->whenPressed(new MoveArmDown());
+  ButtonX->whileHeld(new MoveArmUp());
+  ButtonB->whileHeld(new MoveArmDown());
 
-  RTop->whenPressed(new ClawUp());
-  RBot->whenPressed(new ClawDown());
+  RTop->whileHeld(new ClawUp());
+  RBot->whileHeld(new ClawDown());
 
-  LTop->whenPressed(new GoalIn());
-  LBot->whenPressed(new GoalOut());
+  LTop->whileHeld(new GoalIn());
+  LBot->whileHeld(new GoalOut());
 
-  Up->whenPressed(new IntakeIn());
-  Down->whenPressed(new IntakeOut());
+  Up->whileHeld(new IntakeIn());
+  Down->whileHeld(new IntakeOut());
   
 
 }

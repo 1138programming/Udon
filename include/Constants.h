@@ -27,9 +27,9 @@ const int armMotorPort = 1;
 
 //ADI Digital Ports
 
-const std::uint8_t clawPistonPort = 'a';
+const std::uint8_t clawPistonPort = 'd';
 const std::uint8_t leftPistonPort = 'b';
-const std::uint8_t rightPistonPort = 'c';
+const std::uint8_t rightPistonPort = 'a';
 
 
 // Motor gearsets
@@ -41,7 +41,7 @@ pros::E_MOTOR_GEARSET_INVALID-----Error return code
 */
 const pros::motor_gearset_e_t baseMotorGearset = pros::E_MOTOR_GEARSET_18;
 const pros::motor_gearset_e_t intakeMotorGearset = pros::E_MOTOR_GEARSET_18;
-const pros::motor_gearset_e_t armMotorGearset = pros::E_MOTOR_GEARSET_06;
+const pros::motor_gearset_e_t armMotorGearset = pros::E_MOTOR_GEARSET_36;
 
 // Global configurations
 const pros::motor_encoder_units_e_t globalEncoderUnits = pros::E_MOTOR_ENCODER_COUNTS;

@@ -36,23 +36,23 @@ lv_res_t AutonChooser::updateAutonName(lv_obj_t* btn) {
 }
 
 void AutonChooser::init() {
-  if (scrollRight == NULL) {
-    scrollRight = lv_btn_create(lv_scr_act(), NULL);
-    lv_obj_t* scrollRightLabel = lv_label_create(scrollRight, NULL);
-    lv_label_set_text(scrollRightLabel, ">");
-    lv_btn_set_action(scrollRight, LV_BTN_ACTION_PR, updateAutonName);
-    lv_obj_align(scrollRight, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+  // if (scrollRight == NULL) {
+  //   scrollRight = lv_btn_create(lv_scr_act(), NULL);
+  //   lv_obj_t* scrollRightLabel = lv_label_create(scrollRight, NULL);
+  //   lv_label_set_text(scrollRightLabel, ">");
+  //   lv_btn_set_action(scrollRight, LV_BTN_ACTION_PR, updateAutonName);
+  //   lv_obj_align(scrollRight, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
 
-    autonName = lv_label_create(lv_scr_act(), NULL);
-    lv_label_set_text(autonName, autonNames[autonIndex]);
-    lv_obj_align(autonName, NULL, LV_ALIGN_CENTER, 0, 0);
+  //   autonName = lv_label_create(lv_scr_act(), NULL);
+  //   lv_label_set_text(autonName, autonNames.at(autonIndex));
+  //   lv_obj_align(autonName, NULL, LV_ALIGN_CENTER, 0, 0);
 
-    scrollLeft = lv_btn_create(lv_scr_act(), NULL);
-    lv_obj_t* scrollLeftLabel = lv_label_create(scrollLeft, NULL);
-    lv_label_set_text(scrollLeftLabel, "<");
-    lv_btn_set_action(scrollLeft, LV_BTN_ACTION_PR, updateAutonName);
-    lv_obj_align(scrollLeft, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
-  }
+  //   scrollLeft = lv_btn_create(lv_scr_act(), NULL);
+  //   lv_obj_t* scrollLeftLabel = lv_label_create(scrollLeft, NULL);
+  //   lv_label_set_text(scrollLeftLabel, "<");
+  //   lv_btn_set_action(scrollLeft, LV_BTN_ACTION_PR, updateAutonName);
+  //   lv_obj_align(scrollLeft, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
+  // }
 }
 
 void AutonChooser::uninit() {
