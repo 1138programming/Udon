@@ -1,8 +1,0 @@
-# Driver
-/usr/bin/clang++-6.0
-
-# Language
--std=gnu++
-
-# Includes
--Iinclude

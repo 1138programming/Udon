@@ -7,7 +7,6 @@ GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables
 
 WARNFLAGS+=-Wno-psabi
 
-SPACE :=
 SPACE := $() $()
 COMMA := ,
 

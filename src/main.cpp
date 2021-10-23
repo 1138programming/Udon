@@ -1,5 +1,4 @@
 #include "main.h"
-#include "libIterativeRobot/RobotBase.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -24,8 +23,10 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	Motor::init();
-  libIterativeRobot::RobotBase::initializeRobot();
+	pros::lcd::initialize();
+	pros::lcd::set_text(1, "Hello PROS User!");
+
+	pros::lcd::register_btn1_cb(on_center_button);
 }
 
 /**
@@ -73,7 +74,7 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	/*pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 
@@ -87,5 +88,5 @@ void opcontrol() {
 		left_mtr = left;
 		right_mtr = right;
 		pros::delay(20);
-	}*/
+	}
 }

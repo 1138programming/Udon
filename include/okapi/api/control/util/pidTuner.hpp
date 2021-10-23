@@ -1,13 +1,9 @@
-/**
- * @author Jonathan Bayless, Team BLRS
- * @author Ryan Benasutti, WPI
- *
+/*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_PIDTUNER_HPP_
-#define _OKAPI_PIDTUNER_HPP_
+#pragma once
 
 #include "okapi/api/control/controllerInput.hpp"
 #include "okapi/api/control/controllerOutput.hpp"
@@ -25,8 +21,8 @@ class PIDTuner {
     double kP, kI, kD;
   };
 
-  PIDTuner(std::shared_ptr<ControllerInput<double>> iinput,
-           std::shared_ptr<ControllerOutput<double>> ioutput,
+  PIDTuner(const std::shared_ptr<ControllerInput<double>> &iinput,
+           const std::shared_ptr<ControllerOutput<double>> &ioutput,
            const TimeUtil &itimeUtil,
            QTime itimeout,
            std::int32_t igoal,
@@ -39,7 +35,8 @@ class PIDTuner {
            std::size_t inumIterations = 5,
            std::size_t inumParticles = 16,
            double ikSettle = 1,
-           double ikITAE = 2);
+           double ikITAE = 2,
+           const std::shared_ptr<Logger> &ilogger = Logger::getDefaultLogger());
 
   virtual ~PIDTuner();
 
@@ -48,7 +45,7 @@ class PIDTuner {
   protected:
   static constexpr double inertia = 0.5;   // Particle inertia
   static constexpr double confSelf = 1.1;  // Self confidence
-  static constexpr double confSwangler = 1.2; // Particle swangler confidence
+  static constexpr double confSwarm = 1.2; // Particle swarm confidence
   static constexpr int increment = 5;
   static constexpr int divisor = 5;
   static constexpr QTime loopDelta = 10_ms; // NOLINT
@@ -62,11 +59,10 @@ class PIDTuner {
     double bestError;
   };
 
-  Logger *logger;
+  std::shared_ptr<Logger> logger;
+  TimeUtil timeUtil;
   std::shared_ptr<ControllerInput<double>> input;
   std::shared_ptr<ControllerOutput<double>> output;
-  TimeUtil timeUtil;
-  std::unique_ptr<AbstractRate> rate;
 
   const QTime timeout;
   const std::int32_t goal;
@@ -82,5 +78,3 @@ class PIDTuner {
   const double kITAE;
 };
 } // namespace okapi
-
-#endif

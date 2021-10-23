@@ -1,12 +1,9 @@
-/**
- * @author Ryan Benasutti, WPI
- *
+/*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_THREEENCODERSKIDSTEERMODEL_HPP_
-#define _OKAPI_THREEENCODERSKIDSTEERMODEL_HPP_
+#pragma once
 
 #include "okapi/api/chassis/model/skidSteerModel.hpp"
 
@@ -15,7 +12,7 @@ class ThreeEncoderSkidSteerModel : public SkidSteerModel {
   public:
   /**
    * Model for a skid steer drive (wheels parallel with robot's direction of motion). When all
-   * motors are powered +100%, the robot should move forward in a straight line.
+   * motors are powered +127, the robot should move forward in a straight line.
    *
    * @param ileftSideMotor left side motor
    * @param irightSideMotor right side motor
@@ -26,10 +23,10 @@ class ThreeEncoderSkidSteerModel : public SkidSteerModel {
   ThreeEncoderSkidSteerModel(std::shared_ptr<AbstractMotor> ileftSideMotor,
                              std::shared_ptr<AbstractMotor> irightSideMotor,
                              std::shared_ptr<ContinuousRotarySensor> ileftEnc,
-                             std::shared_ptr<ContinuousRotarySensor> imiddleEnc,
                              std::shared_ptr<ContinuousRotarySensor> irightEnc,
+                             std::shared_ptr<ContinuousRotarySensor> imiddleEnc,
                              double imaxVelocity,
-                             double imaxVoltage = 12000);
+                             double imaxVoltage);
 
   /**
    * Read the sensors.
@@ -38,9 +35,12 @@ class ThreeEncoderSkidSteerModel : public SkidSteerModel {
    */
   std::valarray<std::int32_t> getSensorVals() const override;
 
+  /**
+   * Reset the sensors to their zero point.
+   */
+  void resetSensors() override;
+
   protected:
   std::shared_ptr<ContinuousRotarySensor> middleSensor;
 };
 } // namespace okapi
-
-#endif

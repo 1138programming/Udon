@@ -1,12 +1,9 @@
-/**
- * @author Ryan Benasutti, WPI
- *
+/*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_EMAFILTER_HPP_
-#define _OKAPI_EMAFILTER_HPP_
+#pragma once
 
 #include "okapi/api/filter/filter.hpp"
 
@@ -48,5 +45,3 @@ class EmaFilter : public Filter {
   double lastOutput = 0;
 };
 } // namespace okapi
-
-#endif

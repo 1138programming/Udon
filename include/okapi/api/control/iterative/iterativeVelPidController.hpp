@@ -1,12 +1,9 @@
-/**
- * @author Ryan Benasutti, WPI
- *
+/*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_ITERATIVEVELPIDCONTROLLER_HPP_
-#define _OKAPI_ITERATIVEVELPIDCONTROLLER_HPP_
+#pragma once
 
 #include "okapi/api/control/iterative/iterativeVelocityController.hpp"
 #include "okapi/api/control/util/settledUtil.hpp"
@@ -18,6 +15,16 @@
 namespace okapi {
 class IterativeVelPIDController : public IterativeVelocityController<double, double> {
   public:
+  struct Gains {
+    double kP{0};
+    double kD{0};
+    double kF{0};
+    double kSF{0};
+
+    bool operator==(const Gains &rhs) const;
+    bool operator!=(const Gains &rhs) const;
+  };
+
   /**
    * Velocity PD controller.
    *
@@ -25,8 +32,10 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
    * @param ikD the derivative gain
    * @param ikF the feed-forward gain
    * @param ikSF a feed-forward gain to counteract static friction
+   * @param ivelMath The VelMath used for calculating velocity.
    * @param itimeUtil see TimeUtil docs
    * @param iderivativeFilter a filter for filtering the derivative term
+   * @param ilogger The logger this instance will log to.
    */
   IterativeVelPIDController(
     double ikP,
@@ -35,7 +44,24 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
     double ikSF,
     std::unique_ptr<VelMath> ivelMath,
     const TimeUtil &itimeUtil,
-    std::unique_ptr<Filter> iderivativeFilter = std::make_unique<PassthroughFilter>());
+    std::unique_ptr<Filter> iderivativeFilter = std::make_unique<PassthroughFilter>(),
+    std::shared_ptr<Logger> ilogger = Logger::getDefaultLogger());
+
+  /**
+   * Velocity PD controller.
+   *
+   * @param igains The controller gains.
+   * @param ivelMath The VelMath used for calculating velocity.
+   * @param itimeUtil see TimeUtil docs
+   * @param iderivativeFilter a filter for filtering the derivative term
+   * @param ilogger The logger this instance will log to.
+   */
+  IterativeVelPIDController(
+    const Gains &igains,
+    std::unique_ptr<VelMath> ivelMath,
+    const TimeUtil &itimeUtil,
+    std::unique_ptr<Filter> iderivativeFilter = std::make_unique<PassthroughFilter>(),
+    std::shared_ptr<Logger> ilogger = Logger::getDefaultLogger());
 
   /**
    * Do one iteration of the controller. Returns the reading in the range [-1, 1] unless the
@@ -69,6 +95,18 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   double getTarget() override;
 
   /**
+   * Gets the last set target, or the default target if none was set.
+   *
+   * @return the last target
+   */
+  double getTarget() const;
+
+  /**
+   * @return The most recent value of the process variable.
+   */
+  double getProcessValue() const override;
+
+  /**
    * Returns the last calculated output of the controller.
    */
   double getOutput() const override;
@@ -88,7 +126,7 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   double getMinOutput() override;
 
   /**
-   * Returns the last error of the controller.
+   * Returns the last error of the controller. Does not update when disabled.
    */
   double getError() const override;
 
@@ -118,8 +156,17 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   void setOutputLimits(double imax, double imin) override;
 
   /**
-   * Resets the controller so it can start from 0 again properly. Keeps configuration from
-   * before.
+   * Sets the (soft) limits for the target range that controllerSet() scales into. The target
+   * computed by controllerSet() is scaled into the range [-itargetMin, itargetMax].
+   *
+   * @param itargetMax The new max target for controllerSet().
+   * @param itargetMin The new min target for controllerSet().
+   */
+  void setControllerSetTargetLimits(double itargetMax, double itargetMin) override;
+
+  /**
+   * Resets the controller's internal state so it is similar to when it was first initialized, while
+   * keeping any user-configured information.
    */
   void reset() override;
 
@@ -162,12 +209,16 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   /**
    * Set controller gains.
    *
-   * @param ikP proportional gain
-   * @param ikD derivative gain
-   * @param ikF the feed-forward gain
-   * @param ikSF a feed-forward gain to counteract static friction
+   * @param igains The new gains.
    */
-  virtual void setGains(double ikP, double ikD, double ikF, double ikSF);
+  virtual void setGains(const Gains &igains);
+
+  /**
+   * Gets the current gains.
+   *
+   * @return The current gains.
+   */
+  Gains getGains() const;
 
   /**
    * Sets the number of encoder ticks per revolution. Default is 1800.
@@ -182,7 +233,7 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   virtual QAngularSpeed getVel() const;
 
   protected:
-  Logger *logger;
+  std::shared_ptr<Logger> logger;
   double kP, kD, kF, kSF;
   QTime sampleTime{10_ms};
   double error{0};
@@ -192,6 +243,8 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   double output{0};
   double outputMax{1};
   double outputMin{-1};
+  double controllerSetTargetMax{1};
+  double controllerSetTargetMin{-1};
   bool controllerIsDisabled{false};
 
   std::unique_ptr<VelMath> velMath;
@@ -200,5 +253,3 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   std::unique_ptr<SettledUtil> settledUtil;
 };
 } // namespace okapi
-
-#endif

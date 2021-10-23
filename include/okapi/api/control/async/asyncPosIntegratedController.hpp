@@ -1,12 +1,9 @@
-/**
- * @author Ryan Benasutti, WPI
- *
+/*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_ASYNCPOSINTEGRATEDCONTROLLER_HPP_
-#define _OKAPI_ASYNCPOSINTEGRATEDCONTROLLER_HPP_
+#pragma once
 
 #include "okapi/api/control/async/asyncPositionController.hpp"
 #include "okapi/api/device/motor/abstractMotor.hpp"
@@ -22,23 +19,20 @@ class AsyncPosIntegratedController : public AsyncPositionController<double, doub
   public:
   /**
    * Closed-loop controller that uses the V5 motor's onboard control to move. Input units are
-   * whatever units the motor is in. The maximum velocity for profiled movements will be the maximum
-   * velocity for the motor's gearset.
+   * whatever units the motor is in. Throws a std::invalid_argument exception if the gear ratio is
+   * zero.
    *
-   * @param imotor the motor to control
+   * @param imotor The motor to control.
+   * @param ipair The gearset.
+   * @param imaxVelocity The maximum velocity after gearing.
+   * @param itimeUtil The TimeUtil.
+   * @param ilogger The logger this instance will log to.
    */
-  AsyncPosIntegratedController(std::shared_ptr<AbstractMotor> imotor, const TimeUtil &itimeUtil);
-
-  /**
-   * Closed-loop controller that uses the V5 motor's onboard control to move. Input units are
-   * whatever units the motor is in.
-   *
-   * @param imotor the motor to control
-   * @param imaxVelocity the maximum velocity during a profiled movement in RPM [0-600].
-   */
-  AsyncPosIntegratedController(std::shared_ptr<AbstractMotor> imotor,
+  AsyncPosIntegratedController(const std::shared_ptr<AbstractMotor> &imotor,
+                               const AbstractMotor::GearsetRatioPair &ipair,
                                std::int32_t imaxVelocity,
-                               const TimeUtil &itimeUtil);
+                               const TimeUtil &itimeUtil,
+                               const std::shared_ptr<Logger> &ilogger = Logger::getDefaultLogger());
 
   /**
    * Sets the target for the controller.
@@ -53,7 +47,12 @@ class AsyncPosIntegratedController : public AsyncPositionController<double, doub
   double getTarget() override;
 
   /**
-   * Returns the last error of the controller.
+   * @return The most recent value of the process variable.
+   */
+  double getProcessValue() const override;
+
+  /**
+   * Returns the last error of the controller. Does not update when disabled.
    */
   double getError() const override;
 
@@ -68,8 +67,8 @@ class AsyncPosIntegratedController : public AsyncPositionController<double, doub
   bool isSettled() override;
 
   /**
-   * Resets the controller so it can start from 0 again properly. Keeps configuration from
-   * before.
+   * Resets the controller's internal state so it is similar to when it was first initialized, while
+   * keeping any user-configured information.
    */
   void reset() override;
 
@@ -109,21 +108,33 @@ class AsyncPosIntegratedController : public AsyncPositionController<double, doub
   void controllerSet(double ivalue) override;
 
   /**
-   * Sets a new maximum velocity in RPM [0-600].
-   *
-   * @param imaxVelocity the new maximum velocity
+   * Sets the "absolute" zero position of the controller to its current position.
    */
-  virtual void setMaxVelocity(std::int32_t imaxVelocity);
+  void tarePosition() override;
+
+  /**
+   * Sets a new maximum velocity in motor RPM [0-600].
+   *
+   * @param imaxVelocity The new maximum velocity in motor RPM [0-600].
+   */
+  void setMaxVelocity(std::int32_t imaxVelocity) override;
+
+  /**
+   * Stops the motor mid-movement. Does not change the last set target.
+   */
+  virtual void stop();
 
   protected:
-  Logger *logger;
+  std::shared_ptr<Logger> logger;
+  TimeUtil timeUtil;
   std::shared_ptr<AbstractMotor> motor;
-  std::int32_t maxVelocity{600}; // 600 RPM max, vexOS will limit if the gearset can't go this fast
-  double lastTarget = 0;
-  bool controllerIsDisabled = false;
-  bool hasFirstTarget = false;
+  AbstractMotor::GearsetRatioPair pair;
+  std::int32_t maxVelocity;
+  double lastTarget{0};
+  double offset{0};
+  bool controllerIsDisabled{false};
+  bool hasFirstTarget{false};
   std::unique_ptr<SettledUtil> settledUtil;
-  std::unique_ptr<AbstractRate> rate;
 
   /**
    * Resumes moving after the controller is reset. Should not cause movement if the controller is
@@ -132,5 +143,3 @@ class AsyncPosIntegratedController : public AsyncPositionController<double, doub
   virtual void resumeMovement();
 };
 } // namespace okapi
-
-#endif

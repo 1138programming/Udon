@@ -1,8 +1,4 @@
-/**
- * @author Mikhail Semenov
- * @author Benjamin Jurke
- * @author Ryan Benasutti, WPI
- *
+/*
  * This code is a modified version of Benjamin Jurke's work in 2015. You can read his blog post
  * here:
  * https://benjaminjurke.com/content/articles/2015/compile-time-numerical-unit-dimension-checking/
@@ -11,8 +7,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_QPRESSURE_HPP_
-#define _OKAPI_QPRESSURE_HPP_
+#pragma once
 
 #include "okapi/api/units/QAcceleration.hpp"
 #include "okapi/api/units/QArea.hpp"
@@ -47,5 +42,3 @@ constexpr QPressure operator"" _psi(unsigned long long int x) {
 }
 } // namespace literals
 } // namespace okapi
-
-#endif

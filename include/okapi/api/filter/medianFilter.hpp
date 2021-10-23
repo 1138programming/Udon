@@ -1,14 +1,11 @@
-/**
+/*
  * Uses the median filter algorithm from N. Wirth’s book, implementation by N. Devillard.
- *
- * @author Ryan Benasutti, WPI
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_MEDIANFILTER_HPP_
-#define _OKAPI_MEDIANFILTER_HPP_
+#pragma once
 
 #include "okapi/api/filter/filter.hpp"
 #include <algorithm>
@@ -95,5 +92,3 @@ template <std::size_t n> class MedianFilter : public Filter {
   }
 };
 } // namespace okapi
-
-#endif
